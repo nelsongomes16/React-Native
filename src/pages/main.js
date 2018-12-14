@@ -19,7 +19,7 @@ componentDidMount() {
 }
 
 loadProducts = async (page = 1) => {
-    const response = await api.get("/products?page=${page}");
+    const response = await api.get("/products?page="+page);
 
     const { docs, ...productInfo } = response.data;
     this.setState({ 
