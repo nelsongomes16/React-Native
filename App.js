@@ -1,28 +1,33 @@
 import React from 'react';
 import { Text, View, Platform,Image,ImageBackground } from 'react-native';
-import {Button} from 'native-base';
-
-var myBackground = require('./assets/landing.jpg');
+import Landing from './src/Landing';
+import Search from './src/Search';
 
 export default class App extends React.Component {
+  state= {
+    currentScreen: "search"
+  }
+
+  switchScreen = (currentScreen) =>{
+    this.setState({currentScreen});
+  }
+
+  renderScreen = () => {
+    if(this.state.currentScreen === "landing"){
+      return(
+        <Landing switchScreen={this.switchScreen}/>
+      )
+    }
+    else if(this.state.currentScreen === "search"){
+      return(
+        <Search />
+      )
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
-        <ImageBackground source={myBackground} 
-        style={{width: '100%', height: '100%'}}>
-          <View style={styles.viewStyle}>
-            <Text
-            style={styles.titleStyle}
-            >Welcome to PokéSearch!</Text>
-            <Button
-            block={true}
-            style={styles.buttonStyle}
-            onPress={() =>{}}
-            >
-            <Text style={styles.buttonText}>Start Searching</Text>
-            </Button>
-          </View>
-        </ImageBackground>
+        {this.renderScreen()}
       </View>
     );
   }
@@ -32,22 +37,5 @@ const styles = {
   container: {
     flex: 1,
     marginTop: Platform.OS === "android" ? 24 : 54
-  },
-  viewStyle: {
-    flex:1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  titleStyle: {
-    fontSize: 30,
-    color: 'blue',
-    alignItems: 'center'
-  },
-  buttonStyle: {
-    margin:10},
-    buttonText: {
-      color: 'white',
-      fontSize: 20
-    }
+  }
 }
