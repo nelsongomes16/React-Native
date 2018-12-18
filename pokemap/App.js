@@ -2,23 +2,24 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import SignIn from './src/SignIn';
 import Meteor, {createContainer, Accounts} from 'react-native-meteor';
+import PokeMap from './src/pokeMap';
 
 const SERVER_URL = "ws://192.168.1.67:3000/websocket";
 
 export default class App extends React.Component {
   state = {
-    loggedIn: false
+    loggedIn: true
   }
   componentWillMount(){
     Meteor.connect(SERVER_URL);
+    if(Meteor.userId()){
+      this.flipLogin(true)
+    }
   }
   flipLogin = (x) =>{
     this.setState({loggedIn: x});
   }
   signIn = (email,password) => {
-    if(Meteor.userId()){
-      this.flipLogin(true)
-    }
     Meteor.loginWithPassword(email,password,(error, data)=>{
       if(error){
       if(error.reason === "User not found"){
@@ -36,10 +37,22 @@ export default class App extends React.Component {
     });
     console.log(Meteor.userId())
   }
+  renderView = () =>{
+    if(!this.state.loggedIn){
+      return(
+        <SignIn signIn={this.signIn}/>
+      )
+    }
+    else{
+      return(
+        <PokeMap />
+      )
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
-        <SignIn signIn={this.signIn} />
+        {this.renderView()}
       </View>
     );
   }
