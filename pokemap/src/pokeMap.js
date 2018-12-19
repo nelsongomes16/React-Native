@@ -7,8 +7,30 @@ import Meteor, {createContainer} from 'react-native-meteor';
 class PokeMap extends React.Component{
     render(){
         return(
-            <View>
-                <Text>Pokemap page</Text>
+            <View style={{flex: 1}}>
+                <Header>
+                    <Left>
+
+                    </Left>
+                    <Body>
+                        <Title>PokeMap</Title>
+                    </Body>
+                    <Right>
+                        <Button transparent>
+                            <Icon name="ios-power"/>
+                        </Button>
+                    </Right>
+                </Header>
+                <MapView
+                    style={{flex:1}}
+                    initialRegion={{
+                        latitude: 41.2696,
+                        longitude: -8.0826,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421
+                    }}>
+
+                    </MapView>
             </View>
         )
     }
