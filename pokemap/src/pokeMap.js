@@ -147,6 +147,15 @@ class PokeMap extends React.Component{
             console.log('Add function', err, res);
         })
     }
+    removePokemon = () =>{
+        if(this.props.pokemon.length === 0){
+            return;
+        }
+        var remove = this.props.pokemon[0]._id;
+        Meteor.call("pokemon.subtract", remove, (err,res)=>{
+            console.log('remove function', err, res);
+        })
+    }
     renderPokemon = () =>{
         return this.props.pokemon.map(p => {
             return(
@@ -187,16 +196,18 @@ class PokeMap extends React.Component{
                     >
                         {this.renderPokemon()}
                     </MapView>
-                    <Fab direction="left" position="bottomRight"
-                    style={{backgroundColor: 'green'}}
-                    onPress={this.addPokemon}>
+                    <Fab 
+                        direction="left" 
+                        position="bottomRight"
+                        style={{backgroundColor: 'green'}}
+                        onPress={this.addPokemon}>
                         <Icon name="ios-add"/>
                     </Fab>
                     <Fab 
                         direction="right" 
                         position="bottomLeft"
                         style={{backgroundColor: 'red'}}
-                        >
+                        onPress={this.removePokemon}>
                         <Icon name="ios-remove"/>
                     </Fab>
             </View>
