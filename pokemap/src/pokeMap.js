@@ -142,8 +142,27 @@ class PokeMap extends React.Component{
     recordEvent = (x) => {
         this.setState({location: x});
     }
-
+    addPokemon = () =>{
+        Meteor.call('pokemon.add',this.state.location,(err,res)=>{
+            console.log('Add function', err, res);
+        })
+    }
+    renderPokemon = () =>{
+        return this.props.pokemon.map(p => {
+            return(
+                <MapView.Marker
+                    coordinate={{latitude: p.latitude, longitude: p.longitude}}
+                    key={p._id}
+                >
+                    <Image source={{uri: "http://localhost:3000/"+p.image}} 
+                    style={{height: 50, width: 50}}
+                    />
+                </MapView.Marker>
+            )
+        })
+    }
     render(){
+        console.log(this.props.pokemon);
         return(
             <View style={{flex:1}}>
                 <Header>
@@ -166,13 +185,18 @@ class PokeMap extends React.Component{
                     customMapStyle={mapStyle}
                     onRegionChangeComplete={(x) => this.recordEvent(x)}
                     >
+                        {this.renderPokemon()}
                     </MapView>
                     <Fab direction="left" position="bottomRight"
-                    style={{backgroundColor: 'green'}}>
+                    style={{backgroundColor: 'green'}}
+                    onPress={this.addPokemon}>
                         <Icon name="ios-add"/>
                     </Fab>
-                    <Fab direction="right" position="bottomLeft"
-                    style={{backgroundColor: 'red'}}>
+                    <Fab 
+                        direction="right" 
+                        position="bottomLeft"
+                        style={{backgroundColor: 'red'}}
+                        >
                         <Icon name="ios-remove"/>
                     </Fab>
             </View>
@@ -180,4 +204,10 @@ class PokeMap extends React.Component{
     }
 }
 
-export default PokeMap;
+export default createContainer(params=>{
+    Meteor.subscribe('pokemon');
+
+    return{
+        pokemon: Meteor.collection('pokemon').find({})
+    };
+}, PokeMap);

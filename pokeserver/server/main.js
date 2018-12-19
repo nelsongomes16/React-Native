@@ -13,6 +13,7 @@ Meteor.methods({
           console.log('User not signed in!')
           return;
         }
+        console.log('Adding pokemon')
         var range = 0.035;
         var range1 = Math.random() > 0.5 ? range: -range;
         var range2 = Math.random() > 0.5 ? range: -range;
@@ -31,4 +32,4 @@ Meteor.methods({
 
         return Pokemon.insert({image: icons[random], longitude: long, latitude: lat})
     }
-});
+}); 
