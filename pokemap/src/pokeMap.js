@@ -170,6 +170,10 @@ class PokeMap extends React.Component{
             )
         })
     }
+    logout= () => {
+        Meteor.logout();
+        this.props.flipLogin(false);
+    }
     render(){
         console.log(this.props.pokemon);
         return(
@@ -182,7 +186,7 @@ class PokeMap extends React.Component{
                         <Title>PokéMap</Title>
                     </Body>
                     <Right>
-                        <Button transparent>
+                        <Button transparent onPress={this.logout}>
                             <Icon name="ios-power"/>
                         </Button>
                     </Right>
